@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -11,20 +10,21 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                bat 'mvnw.cmd clean package'
+                sh 'chmod +x mvnw'
+                sh './mvnw clean package'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t student-task-manager:latest .'
+                sh 'docker build -t student-task-manager:latest .'
             }
         }
 
         stage('Verify Kubernetes') {
             steps {
-                bat 'kubectl get deployments'
-                bat 'kubectl get pods'
+                sh 'kubectl get deployments'
+                sh 'kubectl get pods'
             }
         }
     }
